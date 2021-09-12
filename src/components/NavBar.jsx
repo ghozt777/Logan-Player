@@ -89,7 +89,7 @@ export const NavBar = () => {
     `
 
     const HomeSVG = styled.svg`
-    color:${theme==="light"? "black" : "#EC4899"};;
+    color:${theme==="light"? "black" : "white"};;
     `
 
     const HistorySVG = styled.svg`

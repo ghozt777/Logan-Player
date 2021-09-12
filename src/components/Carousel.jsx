@@ -27,6 +27,7 @@ export const Carousel = () => {
     font-size: 1.5rem;
     color: white;
     top: 50%;
+    z-index:2;
     width: max-content;
     left: 10%;
     margin:auto;
@@ -44,19 +45,20 @@ export const Carousel = () => {
         background-position:center;
         background-repeat:no-repeat;
         height: 100%;
+        opacity: 0.7;
         max-width: 100%;
     `
 
     const cards = [
         <CarouselCard onClick={() => window.location.assign("https://www.youtube.com/premium")}>
             <CarouselCardHeader>
-                    <Fade duration={2000}>Never Try YouTube Premium</Fade>
+                    <Fade duration={2000}>YouTube is Junk</Fade>
             </CarouselCardHeader>
             <CarouselCardHero url={"https://images.unsplash.com/photo-1533282960533-51328aa49826?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2830&q=80"}></CarouselCardHero>
         </CarouselCard>,
         <CarouselCard>
             <CarouselCardHeader>
-            <Fade duration={2000}>Its a complete waste of money</Fade>
+            <Fade duration={2000}>Its a complete waste of time</Fade>
             </CarouselCardHeader>
             <CarouselCardHero></CarouselCardHero>
         </CarouselCard>,
@@ -88,7 +90,6 @@ export const Carousel = () => {
         <CarouselWrapper>
             {
                 cards.map((card,index) => {
-                    console.log(card)
                     if(index===current){
                         return <Fade><div  style={{height:"100%",width:"100%"}}>{card}</div></Fade>
                     }else return <div></div>
