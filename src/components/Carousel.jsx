@@ -13,6 +13,7 @@ export const Carousel = () => {
     align-items:center;
     @media (max-width:700px){
         margin-left:0;
+        height: 25%;
     }
     `
 

@@ -26,6 +26,7 @@ const Grid = styled.div`
 
   @media (max-width:700px){
     width: 100%;
+    max-height: 60%;
     grid-template-columns: repeat(2 ,1fr);
       margin:0;
       gap: 1rem;

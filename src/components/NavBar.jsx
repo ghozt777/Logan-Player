@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useNavigate} from "react-router-dom"
 import Fade from 'react-reveal/Fade';
 import {useTheme} from '../context/ThemeProvider'
 import {useLogin} from "../context/LoginProvider"
@@ -7,6 +7,13 @@ export const NavBar = () => {
 
     const {theme,setTheme} = useTheme()
     const {isLoggedIn,setIsLoggedIn} = useLogin()
+    const navigate = useNavigate()
+
+    function loginClickHandler(){
+        setIsLoggedIn(c => !c)
+        navigate("/login")
+    }
+
     const Nav = styled.nav`
     z-index: 3;
     display:flex;
@@ -154,7 +161,7 @@ export const NavBar = () => {
                 {themeSVG}
                 <NavText className="nav-text"><Fade>theme: {theme}</Fade></NavText>
             </NavItem>
-            <NavItem onClick={() => setIsLoggedIn(c => !c)}>
+            <NavItem onClick={loginClickHandler}>
                 {loginSVG}
                 <NavText className="nav-text"><Fade>{isLoggedIn ? "logout" : "login"}</Fade></NavText>
             </NavItem>

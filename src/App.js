@@ -1,21 +1,13 @@
-import {NavBar} from "./components/NavBar"
-import styled from "styled-components";
-import {useTheme} from "./context/ThemeProvider"
+import axios from "axios";
 import {Routes,Route} from "react-router-dom"
-import { Carousel } from "./components/Carousel";
 import {useVideos} from "./context/VideoProvider"
 import {useEffect} from "react"
-import {Videos} from "./components/Videos"
-import axios from "axios";
-import { SearchBar } from "./components/SearchBar";
+import {LoginPage} from "./pages/Login.page"
+import {MainPage} from "./pages/Main.page"
+
+
 function App() {
-  const {theme} = useTheme()
-  const App = styled.div`
-  background-color: ${theme==="dark" ? "#07080e" : "white"};
-  position:relative;
-  height:100vh;
-  width:100vw;
-  `
+
   const {videoDispatch} = useVideos()
 
   useEffect(() => {
@@ -26,15 +18,10 @@ function App() {
   },[videoDispatch])
 
   return (
-    <App>
       <Routes>
-
+        <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
-      <NavBar />
-      <Carousel />
-      <SearchBar />
-      <Videos />
-    </App>
   );
 }
 
