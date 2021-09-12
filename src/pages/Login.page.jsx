@@ -1,6 +1,10 @@
 import styled from "styled-components"
 import {useState,useEffect} from "react"
+import {useNavigate , NavLink} from "react-router-dom"
 import { useTheme } from "../context/ThemeProvider"
+import { TextField } from "@material-ui/core"
+import {HiOutlineEmojiHappy} from "react-icons/hi"
+import { FaKey } from "react-icons/fa"
 import {Fade} from "react-reveal"
 import axios from "axios"
 
@@ -26,7 +30,7 @@ const Art = styled.div`
     flex-direction:column;
     justify-content:space-evenly;
     align-items:center;
-    background-color:${props => props.theme==="dark" ? "#18191a" : "white"};
+    background-color:${props => props.theme==="dark" ? "#18191a" : "#F3F4F6"};
     svg{
         filter: grayscale(1)
     }
@@ -106,21 +110,60 @@ const PizzaSVG = styled.svg`
 `
 
 const LoginSection = styled.div`
-    background-color: red;
-    height: 100%;
+    height: 90%;
+    margin: auto;
     width: 55%;
-    background-color:${props => props.theme==="dark" ? "white" : "#18191a"};
+    display: flex;
+    flex-direction:column;
+    justify-content-space-evenly;
+    align-items:center;
+    background-color: white;
     @media (max-width: 700px){
         border-style:none;
         border-radius: 0.4rem;
         width: 100%;
-        height: 60%;
+        height: 50%;
+    }
+`
+const TextFieldWrapper = styled.div`
+    display:flex;
+    width: 60%;
+    height: 20%;
+    flex-direction:row;
+    justify-content:space-evenly;
+    align-items:center;
+    .username{
+        width: 90%;
+    }
+    @media (max-width:700px){
+        width: 70%;
+        .username{
+            width: 80%;
+        }
+    }
+`
+const Extras = styled.div`
+    display:flex;
+    margin: 0 auto;
+    flex-direction:row;
+    justify-content:flex-start;
+    align-items:center;
+    .link{
+        font-size: 1rem;
+        margin-left: 1rem;
+        text-decoration:none;
+        color: ${props => props.theme==="dark" ? "white" : "black"};
+    }
+    @media (max-width:700px){
+        .link{
+            font-size: 0.7rem;
+        }
     }
 `
 
-
 export const LoginPage = () => {
     const {theme} = useTheme()
+    const navigate = useNavigate()
     return(
         <Wrapper>
             <Art theme={theme}>
@@ -138,7 +181,18 @@ export const LoginPage = () => {
                 </Logo>
             </Art>
             <LoginSection theme={theme}>
-
+                <TextFieldWrapper>
+                    <HiOutlineEmojiHappy size="25" />
+                    <TextField  type="text" className="username" label="username" variant="outlined" required />
+                </TextFieldWrapper>
+                <TextFieldWrapper>
+                    <FaKey size="20" />
+                    <TextField  type="password" className="username" label="password" variant="outlined" required />
+                </TextFieldWrapper>
+                <Extras>
+                    <NavLink className="link" to="/" >create user</NavLink>
+                    <NavLink className="link" to="/" >forgot password</NavLink>
+                </Extras>
             </LoginSection>
         </Wrapper>
     )
