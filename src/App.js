@@ -4,7 +4,7 @@ import {useVideos} from "./context/VideoProvider"
 import {useEffect} from "react"
 import {LoginPage} from "./pages/Login.page"
 import {MainPage} from "./pages/Main.page"
-
+import {CreateAccount} from './pages/CreateAccount.page'
 
 function App() {
 
@@ -21,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/create-account" element={<CreateAccount />} />
       </Routes>
   );
 }
