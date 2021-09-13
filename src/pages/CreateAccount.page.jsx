@@ -4,9 +4,12 @@ import {useNavigate , NavLink} from "react-router-dom"
 import { useTheme } from "../context/ThemeProvider"
 import { TextField } from "@material-ui/core"
 import {HiOutlineEmojiHappy} from "react-icons/hi"
-import { FaKey } from "react-icons/fa"
+import { FaKey ,FaUserAstronaut} from "react-icons/fa"
+import {SiMailDotRu} from "react-icons/si"
 import {Fade} from "react-reveal"
 import axios from "axios"
+import {Formik} from "formik"
+
 
 const Wrapper = styled.div`
     overflow-x:hidden;
@@ -183,22 +186,54 @@ const Button = styled.button`
     &:hover{
         background-color: ${props => props.theme==="dark" ? "#9CA3AF" : "#1F2937"};
     }
+    &:disabled{
+        background-color: #FF4646;
+        opacity: 0.2;
+    }
     @media (max-width:700px){
-        height: 25px;
+        height: 40px;
         width: 20%;
         border-radius: 0.2rem;
     }
 `
+const Form = styled.form`
+    height: 100%;
+    width: 100%;
+    display:flex;
+    flex-direction:column;
+    justify-content-space-evenly;
+    align-items:center;
 
-export const LoginPage = () => {
+`
+
+export const CreateAccount = () => {
     const {theme} = useTheme()
     const navigate = useNavigate()
+
+    function handleFormSubmit(data,{setSubmitting}){
+        setSubmitting(true)
+        // make the async call
+        console.log(data)
+        setSubmitting(false)
+    }
+
+    function handleValidate(values){
+        const errors = {}
+        if(values.password.length<8){
+            errors.password = "create a strong password"
+        }
+        if(values.password!==values.confirmPassword){
+            errors.password="passwords dont match"
+        }
+        return errors
+    }
+
     return(
         <Wrapper>
             <Art theme={theme}>
                 <QuoteWrapper>
                     <Quote theme={theme}>
-                        <Fade duration="4000">I am my own demographic.</Fade>
+                        <Fade duration="4000">I'm a maverick.</Fade>
                     </Quote>
                     <QuoteLegend theme={theme}>
                       <Fade duration="3000">  - Logan Paul </Fade>
@@ -210,21 +245,72 @@ export const LoginPage = () => {
                 </Logo>
             </Art>
             <LoginSection theme={theme}>
-                <TextFieldWrapper>
-                    <HiOutlineEmojiHappy size="25" />
-                    <TextField  type="text" className="text-field" label="username" variant="outlined" required />
-                </TextFieldWrapper>
-                <TextFieldWrapper>
-                    <FaKey size="20" />
-                    <TextField  type="password" className="text-field" label="password" variant="outlined" required />
-                </TextFieldWrapper>
-                <TextFieldWrapper>
-                    <Button theme={theme}>Login</Button>
-                </TextFieldWrapper>
-                <Extras>
-                    <NavLink className="link" to="/create-account" >create user</NavLink>
-                    <NavLink className="link" to="/forgot-password" >forgot password</NavLink>
-                </Extras>
+                <Formik initialValues={{username:"",email:"",password:"",confirmPassword:""}} onSubmit={handleFormSubmit} validate={handleValidate} >
+                    {({values,isSubmitting,handleChange,handleBlur,handleSubmit,errors}) => {
+                        return(
+                            <Form onSubmit={handleSubmit} >
+                                <TextFieldWrapper>
+                                    <FaUserAstronaut />
+                                    <TextField 
+                                        className="text-field" 
+                                        name="username" 
+                                        type="text" 
+                                        label="username" 
+                                        variant="outlined"
+                                        value={values.username}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </TextFieldWrapper>
+                                <TextFieldWrapper>
+                                    <SiMailDotRu />
+                                    <TextField 
+                                        className="text-field" 
+                                        name="email" 
+                                        type="email" 
+                                        label="Email" 
+                                        variant="outlined"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </TextFieldWrapper>
+                                <TextFieldWrapper>
+                                    <FaKey />
+                                    <TextField 
+                                        className="text-field" 
+                                        name="password" 
+                                        type="password" 
+                                        label="password" 
+                                        variant="outlined"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        error={errors.password}
+                                        helperText={errors.password}
+                                    />
+                                </TextFieldWrapper>
+                                <TextFieldWrapper>
+                                    <FaKey />
+                                    <TextField 
+                                        className="text-field" 
+                                        name="confirmPassword" 
+                                        type="password" 
+                                        label="confirm password" 
+                                        variant="outlined"
+                                        value={values.confirmPassword}
+                                        onChange={handleChange}
+                                    />
+                                </TextFieldWrapper>
+                                <Button 
+                                    type="submit"
+                                    disabled={isSubmitting||errors.password}
+                                >
+                                    Create Account
+                                </Button>
+                            </Form>
+                        )
+                    }}
+                </Formik>
             </LoginSection>
         </Wrapper>
     )

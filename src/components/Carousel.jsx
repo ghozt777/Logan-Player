@@ -42,7 +42,8 @@ export const Carousel = () => {
         background-size:cover;
         background-color:transparent;
         border-style:none;
-        border-radius: 0.4rem;
+        border-bottom-left-radius: 0.4rem;
+        border-bottom-right-radius: 0.4rem;
         background-position:center;
         background-repeat:no-repeat;
         height: 100%;
