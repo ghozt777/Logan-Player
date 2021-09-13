@@ -1,9 +1,8 @@
 import {useState,useEffect} from "react"
 import styled from "styled-components"
 import { Fade , Zoom } from "react-reveal"
-export const Carousel = () => {
-    
-    const CarouselWrapper = styled.div`
+
+const CarouselWrapper = styled.div`
     margin-left:5rem;
     height: 40%;
     width:100%;
@@ -50,6 +49,10 @@ export const Carousel = () => {
         opacity: 0.7;
         max-width: 100%;
     `
+
+export const Carousel = () => {
+    
+    
 
     const cards = [
         <CarouselCard onClick={() => window.location.assign("https://www.youtube.com/premium")}>

@@ -5,6 +5,7 @@ import {useEffect} from "react"
 import {LoginPage} from "./pages/Login.page"
 import {MainPage} from "./pages/Main.page"
 import {CreateAccount} from './pages/CreateAccount.page'
+import {VideoPlayer} from "./pages/VideoPlayer.page"
 
 function App() {
 
@@ -12,8 +13,12 @@ function App() {
 
   useEffect(() => {
     (async() => {
-      const response  = await axios.get("https://logan-player-backend.ghozt777.repl.co/videos")
-      videoDispatch({type:"GET_VIDEOS",payload:response.data.videos})
+      try{
+        const response  = await axios.get("https://logan-player-backend.ghozt777.repl.co/videos")
+        videoDispatch({type:"GET_VIDEOS",payload:response.data.videos})
+      }catch(err){
+        console.error(err.message)
+      }
     })()
   },[videoDispatch])
 
@@ -22,6 +27,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/:videoId" element={<VideoPlayer />} />
       </Routes>
   );
 }
