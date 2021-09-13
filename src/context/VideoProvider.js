@@ -6,7 +6,7 @@ export const useVideos = () => useContext(VideoData)
 
 export const VideoProvider = ({children}) => {
     
-    const [videos,videoDispatch] = useReducer(reducer,{test:"test",arr:[1,2,3,4]})
+    const [videos,videoDispatch] = useReducer(reducer,[])
     return(
         <VideoData.Provider value={{videos,videoDispatch}}>
             {children}

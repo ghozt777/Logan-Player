@@ -214,7 +214,11 @@ export const CreateAccount = () => {
         setSubmitting(true)
         // make the async call
         console.log(data)
-        setSubmitting(false)
+        // to simulate an async call remove after testing
+        setTimeout(() => {
+            setSubmitting(false)
+            navigate("/login")
+        },2000)
     }
 
     function handleValidate(values){

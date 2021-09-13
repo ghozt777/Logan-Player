@@ -4,8 +4,8 @@ import Logo from "../images/monster-icons/SVG/logo.svg"
 import Pizza from "../images/pizza-icons-01/svg/Pizza.svg"
 const Card = styled.div`
     cursor:pointer;
-    width: 300px;
-    height: 300px;
+    width: 340px;
+    height: 250px;
     padding: 10px;
     display:flex;
     flex-direction:column;
