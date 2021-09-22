@@ -11,11 +11,10 @@ const Nav = styled.nav`
     height:100%;
     align-itmes:center;
     width:5em;
-    position:absolute;
-    border-style:none;
-    border-radius:0.7rem;
-    background-color: ${props => props.theme==="dark" ? "#191b30" : "#F3F4F6"};
     left:0;
+    position:fixed;
+    border-style:none;
+    background-color: ${props => props.theme==="dark" ? "#191b30" : "#F3F4F6"};
     transition: 350ms;
     .follow{
         margin-top: auto;
@@ -147,7 +146,7 @@ export const NavBar = () => {
                 <YoutubeSVG aria-hidden="true" focusable="false" data-prefix="fab" data-icon="youtube" class="svg-inline--fa fa-youtube fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></YoutubeSVG>
                 <NavText className="nav-text" theme={theme} ><Fade>Logan Player</Fade></NavText>
             </NavItem>
-            <NavItem theme={theme}>
+            <NavItem theme={theme} onClick={() => navigate("/")} >
                 <HomeSVG theme={theme} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="campground" class="svg-inline--fa fa-campground fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M624 448h-24.68L359.54 117.75l53.41-73.55c5.19-7.15 3.61-17.16-3.54-22.35l-25.9-18.79c-7.15-5.19-17.15-3.61-22.35 3.55L320 63.3 278.83 6.6c-5.19-7.15-15.2-8.74-22.35-3.55l-25.88 18.8c-7.15 5.19-8.74 15.2-3.54 22.35l53.41 73.55L40.68 448H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h608c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM320 288l116.36 160H203.64L320 288z"></path></HomeSVG>
                 <NavText className="nav-text" theme={theme} ><Fade>Home </Fade></NavText>
             </NavItem>

@@ -16,7 +16,6 @@ export const MainPage = () => {
     const {theme} = useTheme()
     return(
         <Wrapper theme={theme}>
-            <NavBar />
             <Carousel />
             <SearchBar />
             <Videos />

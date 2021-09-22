@@ -1,12 +1,23 @@
-import { createContext,useState,useContext } from "react";
+import { createContext,useState,useContext,useLayoutEffect,useEffect } from "react";
 
 const ThemeData = createContext();
 
 export const useTheme = () => useContext(ThemeData)
 
 export const ThemeProvider = ({children}) => {
+    const [theme,setTheme] = useState("light")
+    useLayoutEffect(() => {
+        const savedTheme = localStorage.getItem("theme")
+        if(savedTheme){
+            setTheme(JSON.parse(savedTheme))
+        }
+    },[])
     
-    const [theme,setTheme] = useState("dark")
+    useEffect(() => {
+        localStorage.setItem("theme",JSON.stringify(theme))
+    },[theme])
+    
+
     
     return(
         <ThemeData.Provider value={{theme,setTheme}}>
