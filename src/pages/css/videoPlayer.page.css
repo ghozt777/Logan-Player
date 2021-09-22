@@ -1,0 +1,127 @@
+*{
+    margin:0;
+    padding:0;
+    --transition-primary: 350ms;
+}
+
+.content-wrapper{
+    height: 100%;
+    width: 100%;
+}
+
+.wrapper{
+    position: relative;
+    min-height: 100vh;
+    width:100vw;
+    height:max-content; 
+    margin-left: 5rem;
+    transition: var(--transition-primary);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-evenly;
+    align-items:center;
+}
+
+.header{
+    width: 90%;
+    margin: 1rem 0;
+}
+
+.loader{
+    position: fixed;
+    top:50%;
+    left: 50%;
+    transform:translate(-50% -50%);
+}
+
+.player{
+    width: 95%;
+}
+
+.controls{
+    margin-top: 1rem;
+    margin-left: 5rem;
+    height: 5rem;
+    width: 100%;
+    display:flex;
+    flex-direction:row;
+    justify-content: flex-start;
+    align-items:center;
+}
+
+.control-wrapper{
+    margin: 0 1rem;
+    padding: 0.5rem 1rem;
+    border-style: none;
+    border-radius: 10px;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+    transition: 350ms;
+}
+
+.control-wrapper.light{
+    box-shadow: 0 4px 5px -2px grey;
+}
+
+.control-wrapper.dark{
+    box-shadow: 0 4px 5px -2px black;
+}
+
+.control-wrapper:hover{
+    transform: translateY(-5px) scale(1.1);
+}
+
+.control-icon{
+    max-height: 40px;
+    max-width: 40px;
+}
+
+.comment-input__container{
+    width: 95%;
+    margin: 1rem 6rem 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.comments-wrapper{
+    display: grid;
+    width: 96%;
+    height: max-content;
+    grid-auto-rows: 1fr;
+    grid-row-gap: 30px;
+    padding-bottom: 40px;
+}
+
+.wrapper.light{
+    background-color:white;
+}
+
+.wrapper.dark{
+    background-color: #18191A;
+}
+
+@media (max-width:700px){
+    .wrapper{
+        margin-left: 0rem !important ;
+        margin-bottom: 4rem !important;
+    }
+    .comment-input__container{
+        width: 100%;
+        margin: 1rem 1rem 1rem 0;
+    }
+    .control-wrapper{
+        margin: 0 1rem;
+    }
+    .controls{
+        margin-left: 0;
+        justify-content: space-evenly;
+    }
+    .player{
+        width: 100%;
+    }
+}

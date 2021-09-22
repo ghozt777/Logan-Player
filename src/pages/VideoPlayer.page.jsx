@@ -1,6 +1,6 @@
-import React from "react"
 import {useParams} from "react-router-dom" 
 import YouTube from 'react-youtube';
+import React from "react"
 import {useVideos} from "../context/VideoProvider"
 import {HashLoader} from "react-spinners"
 import {useTheme} from "../context/ThemeProvider"
@@ -30,6 +30,45 @@ background-color: ${props => props.theme==="dark" ? "#181818" : "white"};
         }
     }
 `
+
+const Input = styled.input`
+    width: 100%;
+    height: 100%;
+    border-style: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    transition: 350ms;
+    font-size: 0.8rem;
+    color: ${props => props.theme==="dark" ? "white" : "black"};
+    background-color:${props => props.theme==="dark" ? "#333456" : "#EEEEEE"};
+    &::placeholder{
+        color:${props => props.theme==="dark" ? "white" : "black"};
+        font-size: 0.9rem;
+    }
+    &:focus{
+        outline:none;
+        background-color:${props => props.theme==="dark" ? "#F037A5" : "#CCA8E9"};
+    }
+
+    @media (max-width:700px){
+        padding: 0.4rem 0.7rem;
+        margin:0;
+        font-size: 0.6rem;
+        &::placeholder{
+            font-size: 0.65rem;
+        }
+}
+`
+
+const InputField = styled.div`
+    display:flex;
+    height: 20%;
+    width: 80%;
+    flex-direction:column;
+    align-items:flex-start;
+
+`
+
 const Loader = styled.div`
     position:absolute;
     top: 50%;
@@ -42,18 +81,48 @@ const PlayerWrapper = styled.div`
     width:100%;
     display:flex;
     flex-direction:column;
-    justify-content:space-evenly;
+    justify-content:space-around;
     align-items:center;
 `
 
+const VideoWrapper = styled.div`
+    height: 90%;
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-evenly;
+    align-items:center;
+    @media (max-width:1000px){
+        flex-direction:column;
+        height: 70%;
+    }
+`
+
 const CommentsWrapper = styled.div`
-    max-height: 30%;
-    width: 100%;
+    max-height: 40%;
+    width: 40%;
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
     align-items:center;
     overflow-y:scroll;
+    &::-webkit-scrollbar{
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: ${props => props.theme==="dark" ? "#111827" : "#D1D5DB        "};
+    }
+    &::-webkit-scrollbar-thumb {
+        background: ${props => props.theme==="dark" ? "#7C3AED" : "#1F2937        "};
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: ${props => props.theme==="dark" ? "#A78BFA" : "#4B5563        "};
+    }
+    @media (max-width:700px){
+        width:100%;
+        max-height:30%;
+        border:none;
+    }
 `
 
 const Comment = styled.div`
@@ -104,6 +173,19 @@ const DetailsWrapper = styled.div`
     }
 `
 
+const ContentWrapper = styled.div`
+    height: 70%;
+    width: 50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-evenly;
+    align-items:center;
+    @media (max-width:700px){
+        width: 100%;
+        height: 90%;
+    }
+`
+
 const Title = styled.h1`
     font-size: 1.2rem;
     color: ${props => props.theme==="dark" ? "white" : "#11182"};
@@ -129,39 +211,49 @@ export const VideoPlayer = () => {
     return(
         <Wrapper theme={theme} >
             {   
-                !isReady&&<Loader><HashLoader className="loader" color={`${theme==="dark" ? "white" : "#121212"}`} /></Loader>
+                !isReady&&<Loader><HashLoader color={`${theme==="dark" ? "white" : "#121212"}`} /></Loader>
             }  
             {
                 video&&(
-                <PlayerWrapper>
-                    <Title theme={theme}>{video.title}</Title>
-                    <div>
-                        <Fade><YouTube videoId={`${video.watchId}`} className="player" onReady={() => setIsReady(true)}/></Fade>
-                    </div>
-                    <CommentsWrapper>
-                        {
-                            video.comments.map(comment => {
-                                return(
-                                    <Comment>
-                                        <CommentTextWrapper>
-                                            <CommentText theme={theme} >{comment.content.description}</CommentText>
-                                        </CommentTextWrapper>
-                                        <CommentDetails>
-                                            <DetailsWrapper>
-                                                <Small theme={theme} >{comment.user.username}</Small>
-                                                <img src={Pizza} alt="likes" style={{height: "30px"}}/>
-                                            </DetailsWrapper>
-                                            <DetailsWrapper>
-                                                <Small theme={theme} >{comment.content.time}</Small>
-                                                <img src={Tomato} alt="likes" style={{height: "30px"}}/>
-                                            </DetailsWrapper>
-                                        </CommentDetails>
-                                    </Comment>
-                                )
-                            })
-                        }
-                    </CommentsWrapper>
-                </PlayerWrapper>
+                    <PlayerWrapper>
+                        <Title theme={theme}>{video.title}</Title>
+                        <VideoWrapper>
+                            <ContentWrapper>
+                            <Fade><YouTube videoId={`${video.watchId}`} className="player" onReady={() => setIsReady(true)}/></Fade>
+                                <InputField>
+                                    <Small theme={theme}>add comments</Small> 
+                                    <Input
+                                        type="text"
+                                        theme={theme}
+                                        className="comment-input"
+                                    />
+                                </InputField>
+                            </ContentWrapper>
+                                <CommentsWrapper theme={theme} >
+                                    {
+                                        video.comments.map(comment => {
+                                            return(
+                                                <Comment>
+                                                    <CommentTextWrapper>
+                                                        <CommentText theme={theme} >{comment.content.description}</CommentText>
+                                                    </CommentTextWrapper>
+                                                    <CommentDetails>
+                                                        <DetailsWrapper>
+                                                            <Small theme={theme} >{comment.user.username}</Small>
+                                                            <img src={Pizza} alt="likes" style={{height: "30px"}}/>
+                                                        </DetailsWrapper>
+                                                        <DetailsWrapper>
+                                                            <Small theme={theme} >{comment.content.time}</Small>
+                                                            <img src={Tomato} alt="likes" style={{height: "30px"}}/>
+                                                        </DetailsWrapper>
+                                                    </CommentDetails>
+                                                </Comment>
+                                            )
+                                        })
+                                    }
+                                </CommentsWrapper>
+                        </VideoWrapper>
+                    </PlayerWrapper>
                 )
             }
         </Wrapper>

@@ -5,17 +5,20 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeProvider';
 import { LoginProvider } from "./context/LoginProvider"
 import { VideoProvider } from "./context/VideoProvider"
+import { SearchProvider } from "./context/SearchProvider"
 import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <VideoProvider>
-        <LoginProvider>
-          <ThemeProvider>
-            <App />
-          </ThemeProvider>
-        </LoginProvider>
+        <SearchProvider>
+          <LoginProvider>
+            <ThemeProvider>
+              <App />
+            </ThemeProvider>
+          </LoginProvider>
+        </SearchProvider>
       </VideoProvider>
     </Router>
   </React.StrictMode>,

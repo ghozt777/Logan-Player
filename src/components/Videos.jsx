@@ -1,9 +1,10 @@
 import { VideoCard } from "./VideoCard";
 import {useTheme} from "../context/ThemeProvider"
 import styled from "styled-components";
-import {useVideos} from "../context/VideoProvider"
 import {NavLink} from "react-router-dom"
 import {HashLoader} from "react-spinners"
+import {useSearch} from "../context/SearchProvider"
+import {useVideos} from "../context/VideoProvider"
 
 const Grid = styled.div`
   width: 80%;
@@ -39,27 +40,22 @@ const Grid = styled.div`
   }
 `
 
+const Loader = styled.div`
+    position:absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+`
+
 export const Videos = () => {
     const {theme} = useTheme()
-    const {videos} = useVideos()
+    const {videos : intialVideos} = useVideos()
+    const {filteredVideos:videos} = useSearch()
     return(
             <Grid theme={theme}>
                 {
-                    videos.length===0 ? <HashLoader color="red"/> : videos.map(video => <NavLink style={{textDecoration:"none"}} key={video._id} to={`/${video._id}`} ><VideoCard  url={video.thumbnail} title={video.title} channelName="logan's balls" likes={"10"}/></NavLink>)
-
-                }
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1502136969935-8d8eef54d77b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1349&q=80"} title={"fun day at carnival"} likes={"21"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Y29kaW5nfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"} title={"a new era with ARM"} likes={"1"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-            <VideoCard url={"https://images.unsplash.com/photo-1513297887119-d46091b24bfa?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"} title={"monkey thows poop at grandma"} likes={"12"} channelName={"logan's balls"}/>
-        </Grid>
+                    !videos || videos.length===0 ? <Loader><HashLoader  color={`${theme==="dark" ? "white" : "#121212"}`} /></Loader> : videos.map(video => <NavLink style={{textDecoration:"none"}} key={video._id} to={`/${video._id}`} ><VideoCard  url={video.thumbnail} title={video.title} channelName="logan's balls" likes={"10"}/></NavLink>)
+                }  
+            </Grid>
     )
 }
