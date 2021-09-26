@@ -1,15 +1,21 @@
 import styled from "styled-components"
-import {useState,useEffect} from "react"
+import {useState,useRef} from "react"
 import {useNavigate , NavLink} from "react-router-dom"
 import { useTheme } from "../context/ThemeProvider"
 import { TextField } from "@material-ui/core"
 import {HiOutlineEmojiHappy} from "react-icons/hi"
 import { FaKey } from "react-icons/fa"
-import {Fade} from "react-reveal"
+import { Fade } from "react-reveal"
+import { useAuth } from "../context/AuthProvider"
+import { ClockLoader} from "react-spinners"
+import { useUser } from "../context/UserInfoProvider"
+import { UserCard } from "../components/UserCard"
 import axios from "axios"
+import "./css/toast.css"
 
 const Wrapper = styled.div`
     overflow-x:hidden;
+    overflow-y:hidden;
     width: 100vw;
     height: 100vh;
     position:relative;
@@ -17,6 +23,12 @@ const Wrapper = styled.div`
     margin:0;
     display:flex;
     flex-direction:row;
+    .alert-warning.show{
+        transform: translateY(-10vh);
+    }
+    .alert-warning.hide{
+        transform: translateY(20vh);
+    }
     @media (max-width: 700px){
         flex-direction:column;
     }
@@ -113,6 +125,7 @@ const PizzaSVG = styled.svg`
 `
 
 const LoginSection = styled.div`
+    position: relative;
     height: 90%;
     margin: auto;
     width: 55%;
@@ -167,6 +180,21 @@ const Extras = styled.div`
     }
 `
 
+const Alert = styled.div`
+    position: absolute;
+    left: 20%;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index:3;
+    height: 3rem;
+    width: 70%;
+    transition: 350ms;
+    .message{
+        color: red;
+        font-weight: bold;
+    }
+`
+
 const Button = styled.button`
     @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
     font-family: 'Cabin', sans-serif;
@@ -192,7 +220,66 @@ const Button = styled.button`
 
 export const LoginPage = () => {
     const {theme} = useTheme()
+    const alertRef = useRef()
     const navigate = useNavigate()
+    const {user: savedUser,setUser: setUserFromServer} = useUser()
+    const [user,setUser] = useState({})
+    const [isLoading,setIsLoading] = useState(false)
+    const [showToast,setShowToast] = useState("hide")
+    const {token,isLoggedIn,setToken,setIsLoggedIn} = useAuth()
+
+    const handleSubmit = () => {
+        (async() => {
+            setIsLoading(true)
+            try{    
+                if(!(user.username)&&(!user.password)){
+                    alert("no username/password provided")
+                    throw new Error("no username/password")
+                }
+                const { data } = await axios.post("https://logan-player-backend.ghozt777.repl.co/login",{
+                    username:user.username,
+                    password:user.password
+                })
+                setUserFromServer(data.savedUser)
+                setToken({
+                    accessToken:data.accessToken,
+                    refreshToken:data.refreshToken
+                })
+                setIsLoggedIn(true)
+                setIsLoading(false)
+                navigate('/')
+            }catch(e){
+                alertRef.current.innerText=e.message
+                setShowToast("show")
+                setTimeout(() => setShowToast("hide"),2000)
+                console.error(e.message)
+                setIsLoggedIn(false)
+                setIsLoading(false)
+            }
+        })()
+    }
+
+    function handleLogout(){
+        (async() => {
+            try{
+                const response = await axios.delete("https://logan-player-backend.ghozt777.repl.co/logout",{
+                    data:{
+                        token:token.refreshToken
+                    }
+                })
+                console.log(response)
+                setIsLoggedIn(false)
+                setToken(null)
+                setUserFromServer(null)
+            }catch(e){
+                console.log(e.message)
+                alertRef.current.innerText=e.message
+                setShowToast("show")
+                setTimeout(() => setShowToast("hide"),2000)
+            }
+        })()
+    }
+
     return(
         <Wrapper>
             <Art theme={theme}>
@@ -209,23 +296,78 @@ export const LoginPage = () => {
                 <PizzaSVG theme={theme} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pizza-slice" class="svg-inline--fa fa-pizza-slice fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M158.87.15c-16.16-1.52-31.2 8.42-35.33 24.12l-14.81 56.27c187.62 5.49 314.54 130.61 322.48 317l56.94-15.78c15.72-4.36 25.49-19.68 23.62-35.9C490.89 165.08 340.78 17.32 158.87.15zm-58.47 112L.55 491.64a16.21 16.21 0 0 0 20 19.75l379-105.1c-4.27-174.89-123.08-292.14-299.15-294.1zM128 416a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm48-152a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm104 104a32 32 0 1 1 32-32 32 32 0 0 1-32 32z"></path></PizzaSVG>
                 </Logo>
             </Art>
-            <LoginSection theme={theme}>
-                <TextFieldWrapper>
-                    <HiOutlineEmojiHappy size="25" />
-                    <TextField  type="text" className="text-field" label="username" variant="outlined" required />
-                </TextFieldWrapper>
-                <TextFieldWrapper>
-                    <FaKey size="20" />
-                    <TextField  type="password" className="text-field" label="password" variant="outlined" required />
-                </TextFieldWrapper>
-                <TextFieldWrapper>
-                    <Button theme={theme}>Login</Button>
-                </TextFieldWrapper>
-                <Extras>
-                    <NavLink className="link" to="/create-account" >create user</NavLink>
-                    <NavLink className="link" to="/forgot-password" >forgot password</NavLink>
-                </Extras>
-            </LoginSection>
+            {
+                !isLoggedIn ? (
+
+                    <LoginSection theme={theme}>
+                        <Alert className={`alert alert-warning ${showToast}`}>
+                            <div ref={alertRef} className="message"></div>
+                        </Alert>
+                        <TextFieldWrapper>
+                            <HiOutlineEmojiHappy size="25" />
+                            <TextField  
+                                type="text" 
+                                className="text-field" 
+                                label="username" 
+                                variant="outlined" 
+                                required 
+                                onChange={e => setUser(user => {
+                                    return{
+                                        ...user,
+                                        username: e.target.value
+                                    }
+                                })}
+                            />
+                        </TextFieldWrapper>
+                        <TextFieldWrapper>
+                            <FaKey size="20" />
+                            <TextField  
+                                type="password" 
+                                className="text-field" 
+                                label="password" 
+                                variant="outlined" 
+                                required 
+                                onChange={e => setUser(user => {
+                                    return{
+                                        ...user,
+                                        password: e.target.value
+                                    }
+                                })}
+                            />
+                        </TextFieldWrapper>
+                        <TextFieldWrapper>
+                            <Button theme={theme} onClick={handleSubmit} >Login</Button>
+                        </TextFieldWrapper>
+                        <Extras>
+                            <NavLink className="link" to="/create-account" >create user</NavLink>
+                            <NavLink className="link" to="/forgot-password" >forgot password</NavLink>
+                        </Extras>
+                        {isLoading&&(
+                            <TextFieldWrapper>
+                            <ClockLoader className="loader" /> 
+                            </TextFieldWrapper>
+                        )}
+                    </LoginSection>
+                    ) : (
+                    <LoginSection>
+                        <Alert className={`alert alert-warning ${showToast}`}>
+                            <div ref={alertRef} className="message"></div>
+                        </Alert>
+                        <UserCard 
+                            theme={theme} 
+                            username={savedUser.username} 
+                            email={savedUser.email}
+                            playListLength={savedUser.playlist.length}
+                            watchLaterLength={savedUser.watchLater.length}
+                            likedVideosLength={savedUser.likedVideos.length}
+                        />
+                        <small>currently logged in as <b>{savedUser.username}</b></small>
+                        <TextFieldWrapper>
+                            <Button theme={theme} onClick={handleLogout} >Log Out</Button>
+                        </TextFieldWrapper>
+                    </LoginSection>
+                    )
+            }
         </Wrapper>
     )
 }

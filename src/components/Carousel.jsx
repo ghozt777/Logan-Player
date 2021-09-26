@@ -1,6 +1,6 @@
 import {useState,useEffect} from "react"
 import styled from "styled-components"
-import { Fade , Zoom } from "react-reveal"
+import { Fade } from "react-reveal"
 
 const CarouselWrapper = styled.div`
     margin-left:5rem;

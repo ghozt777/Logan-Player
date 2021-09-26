@@ -3,7 +3,6 @@ import {useTheme} from "../context/ThemeProvider"
 import {Videos} from  "../components/Videos"
 import { SearchBar } from "../components/SearchBar";
 import { Carousel } from "../components/Carousel";
-import {NavBar} from "../components/NavBar"
 
 const Wrapper = styled.div`
   background-color: ${props => props.theme==="dark" ? "#07080e" : "white"};

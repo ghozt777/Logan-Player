@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { Avatar } from "./Avatar"
-import {useVideos} from "../context/VideoProvider"
 
 const Wrapper = styled.div`
     height: max-content;

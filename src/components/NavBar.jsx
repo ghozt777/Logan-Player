@@ -1,8 +1,9 @@
 import {useNavigate} from "react-router-dom"
 import Fade from 'react-reveal/Fade';
 import {useTheme} from '../context/ThemeProvider'
-import {useLogin} from "../context/LoginProvider"
+import {useAuth} from "../context/AuthProvider"
 import styled from "styled-components"
+
 
 const Nav = styled.nav`
     z-index: 3;
@@ -27,6 +28,7 @@ const Nav = styled.nav`
     &:hover .nav-text{
         display:block;
     }
+
 
     @media (max-width:700px){
         flex-direction:row;
@@ -78,7 +80,21 @@ const Nav = styled.nav`
     const NavText = styled.h1`
     font-size: 0.8em;
     display:none;
-    color: ${props => props.theme==="light"? "black" : "white"};    
+    .desktop{
+        display:block;
+    }
+    .mobile{
+        display:none;
+    }
+    color: ${props => props.theme==="light"? "black" : "white"}; 
+    @media(max-width:700px){
+        .desktop{
+            display:none;
+        }
+        .mobile{
+            display:block;
+        }
+    }
     `
     const YoutubeSVG = styled.svg`
     color:red;
@@ -119,13 +135,8 @@ const Nav = styled.nav`
 export const NavBar = () => {
 
     const {theme,setTheme} = useTheme()
-    const {isLoggedIn,setIsLoggedIn} = useLogin()
+    const {isLoggedIn} = useAuth()
     const navigate = useNavigate()
-
-    function loginClickHandler(){
-        setIsLoggedIn(c => !c)
-        navigate("/login")
-    }
 
 
     const themeSVG = theme==="dark" ? (
@@ -142,9 +153,9 @@ export const NavBar = () => {
 
     return(
         <Nav theme={theme}>
-            <NavItem className="first-element" onClick={() => window.location.assign("https://www.youtube.com/")} theme={theme}>
+            <NavItem className="first-element" onClick={() => navigate("/message")} theme={theme}>
                 <YoutubeSVG aria-hidden="true" focusable="false" data-prefix="fab" data-icon="youtube" class="svg-inline--fa fa-youtube fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></YoutubeSVG>
-                <NavText className="nav-text" theme={theme} ><Fade>Logan Player</Fade></NavText>
+                <NavText className="nav-text" theme={theme} ><Fade> <span className="desktop">Logan Player</span> <span className="mobile">Logang4Life</span> </Fade></NavText>
             </NavItem>
             <NavItem theme={theme} onClick={() => navigate("/")} >
                 <HomeSVG theme={theme} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="campground" class="svg-inline--fa fa-campground fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M624 448h-24.68L359.54 117.75l53.41-73.55c5.19-7.15 3.61-17.16-3.54-22.35l-25.9-18.79c-7.15-5.19-17.15-3.61-22.35 3.55L320 63.3 278.83 6.6c-5.19-7.15-15.2-8.74-22.35-3.55l-25.88 18.8c-7.15 5.19-8.74 15.2-3.54 22.35l53.41 73.55L40.68 448H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h608c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM320 288l116.36 160H203.64L320 288z"></path></HomeSVG>
@@ -154,7 +165,7 @@ export const NavBar = () => {
                 <TrendingSVG aria-hidden="true" focusable="false" data-prefix="fas" data-icon="fire" class="svg-inline--fa fa-fire fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M216 23.86c0-23.8-30.65-32.77-44.15-13.04C48 191.85 224 200 224 288c0 35.63-29.11 64.46-64.85 63.99-35.17-.45-63.15-29.77-63.15-64.94v-85.51c0-21.7-26.47-32.23-41.43-16.5C27.8 213.16 0 261.33 0 320c0 105.87 86.13 192 192 192s192-86.13 192-192c0-170.29-168-193-168-296.14z"></path></TrendingSVG>
                 <NavText className="nav-text" theme={theme} ><Fade>Trending</Fade></NavText>
             </NavItem>
-            <NavItem theme={theme}>
+            <NavItem theme={theme} onClick={() => navigate('/history')} >
                 <HistorySVG theme={theme} aria-hidden="true" focusable="false" data-prefix="far" data-icon="clock" class="svg-inline--fa fa-clock fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"></path></HistorySVG>
                 <NavText className="nav-text" theme={theme} ><Fade>History</Fade></NavText>
             </NavItem>
@@ -162,7 +173,7 @@ export const NavBar = () => {
                 {themeSVG}
                 <NavText className="nav-text" theme={theme} ><Fade>theme: {theme}</Fade></NavText>
             </NavItem>
-            <NavItem theme={theme} onClick={loginClickHandler}>
+            <NavItem theme={theme} onClick={() => navigate('/login')}>
                 {loginSVG}
                 <NavText className="nav-text" theme={theme} ><Fade>{isLoggedIn ? "logout" : "login"}</Fade></NavText>
             </NavItem>

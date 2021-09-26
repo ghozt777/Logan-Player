@@ -4,7 +4,6 @@ import styled from "styled-components";
 import {NavLink} from "react-router-dom"
 import {HashLoader} from "react-spinners"
 import {useSearch} from "../context/SearchProvider"
-import {useVideos} from "../context/VideoProvider"
 
 const Grid = styled.div`
   width: 80%;
@@ -49,12 +48,11 @@ const Loader = styled.div`
 
 export const Videos = () => {
     const {theme} = useTheme()
-    const {videos : intialVideos} = useVideos()
     const {filteredVideos:videos} = useSearch()
     return(
             <Grid theme={theme}>
                 {
-                    !videos || videos.length===0 ? <Loader><HashLoader  color={`${theme==="dark" ? "white" : "#121212"}`} /></Loader> : videos.map(video => <NavLink style={{textDecoration:"none"}} key={video._id} to={`/${video._id}`} ><VideoCard  url={video.thumbnail} title={video.title} channelName="logan's balls" likes={"10"}/></NavLink>)
+                    !videos || videos.length===0 ? <Loader><HashLoader  color={`${theme==="dark" ? "white" : "#121212"}`} /></Loader> : videos.map(video => <NavLink style={{textDecoration:"none"}} key={video._id} to={`/${video._id}`} ><VideoCard  url={video.thumbnail} title={video.title} channelName="ghozt TV" likes={video.likeCount ?? 0}/></NavLink>)
                 }  
             </Grid>
     )

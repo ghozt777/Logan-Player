@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 *{
     margin:0;
     padding:0;
@@ -20,6 +21,14 @@
     flex-direction:column;
     justify-content:space-evenly;
     align-items:center;
+}
+
+.wrapper.light{
+    background-color:white;
+}
+
+.wrapper.dark{
+    background-color: #18191A;
 }
 
 .header{
@@ -97,12 +106,50 @@
     padding-bottom: 40px;
 }
 
-.wrapper.light{
-    background-color:white;
+.alert-warning.show{
+    transform: translateY(-10vh);
+}
+.alert-warning.hide{
+    transform: translateY(20vh);
 }
 
-.wrapper.dark{
-    background-color: #18191A;
+
+.btn__container{
+    width: 90%;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.btn{
+    border-style:none;
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Ubuntu', sans-serif;
+    transition: 250ms;
+}
+
+.btn.light{
+    color: white;
+    background-color: #4F46E5;
+    box-shadow: 0 4px 5px -2px grey;
+}
+
+.btn.light:hover{
+    background-color:#6366F1; 
+}
+
+.btn.dark{
+    color: white;
+    background-color: #7C3AED;
+    box-shadow: 0 4px 5px -2px black;
+}
+
+.btn.dark:hover{
+    background-color: #8B5CF6; 
 }
 
 @media (max-width:700px){
@@ -123,5 +170,8 @@
     }
     .player{
         width: 100%;
+    }
+    .btn__container{
+        justify-content: center;
     }
 }

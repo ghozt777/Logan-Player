@@ -1,24 +1,33 @@
 import styled from "styled-components"
-import {useState,useEffect} from "react"
-import {useNavigate , NavLink} from "react-router-dom"
 import { useTheme } from "../context/ThemeProvider"
 import { TextField } from "@material-ui/core"
-import {HiOutlineEmojiHappy} from "react-icons/hi"
 import { FaKey ,FaUserAstronaut} from "react-icons/fa"
-import {SiMailDotRu} from "react-icons/si"
-import {Fade} from "react-reveal"
+import { SiMailDotRu } from "react-icons/si"
+import { Fade } from "react-reveal"
 import axios from "axios"
-import {Formik} from "formik"
+import { Formik } from "formik"
+import {useState,useRef} from "react"
+import { useAuth } from "../context/AuthProvider"
+import { useNavigate } from "react-router-dom"
+import { useUser } from "../context/UserInfoProvider"
+import "./css/toast.css"
 
 
 const Wrapper = styled.div`
     overflow-x:hidden;
+    overflow-y:hidden;
     width: 100vw;
     height: 100vh;
     position:relative;
     padding:0;
     margin:0;
     display:flex;
+    .alert-warning.show{
+        transform: translateY(-10vh);
+    }
+    .alert-warning.hide{
+        transform: translateY(20vh);
+    }
     flex-direction:row;
     @media (max-width: 700px){
         flex-direction:column;
@@ -119,6 +128,7 @@ const LoginSection = styled.div`
     height: 90%;
     margin: auto;
     width: 55%;
+    position: relative;
     display: flex;
     flex-direction:column;
     justify-content-space-evenly;
@@ -145,27 +155,6 @@ const TextFieldWrapper = styled.div`
         width: 70%;
         .text-field{
             width: 80%;
-        }
-    }
-`
-const Extras = styled.div`
-    display:flex;
-    margin-left: 3rem;
-    flex-direction:row;
-    justify-content:center;
-    align-items:center;
-    .link{
-        font-size: 1rem;
-        margin-left: 1rem;
-        text-decoration:none;
-        color: ${props => props.theme==="dark" ? "white" : "black"};
-        &:hover{
-            font-weight:bold;
-        }
-    }
-    @media (max-width:700px){
-        .link{
-            font-size: 0.7rem;
         }
     }
 `
@@ -206,20 +195,55 @@ const Form = styled.form`
 
 `
 
+const Alert = styled.div`
+    position: absolute;
+    left: 20%;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index:3;
+    height: 3rem;
+    width: 70%;
+    transition: 350ms;
+    .message{
+        color: red;
+        font-weight: bold;
+    }
+`
+
 export const CreateAccount = () => {
     const {theme} = useTheme()
     const navigate = useNavigate()
-
+    const alertRef = useRef()
+    const {setUser} = useUser()
+    const [showToast,setShowToast] = useState("hide")
+    const {setToken} = useAuth()
     function handleFormSubmit(data,{setSubmitting}){
-        setSubmitting(true)
         // make the async call
-        console.log(data)
-        // to simulate an async call remove after testing
-        setTimeout(() => {
-            setSubmitting(false)
-            navigate("/login")
-        },2000)
-    }
+        (async() => {
+                setSubmitting(true)
+                try{
+                    const response = await axios.post("https://logan-player-backend.ghozt777.repl.co/create-user",{
+                    username:data.username,
+                    password:data.password,
+                    email:data.email
+                    })
+                    setUser(response.data.savedUser)
+                    await setToken({
+                        accessToken:response.data.accessToken,
+                        refreshToken:response.data.refreshToken
+                    })
+                    navigate("/login")
+                }catch(e){
+                    alertRef.current.innerText=e.message
+                    console.log(alertRef.current)
+                    setShowToast("show")
+                    setTimeout(() => setShowToast("hide"),2000)
+                    console.error(e.message)
+                }finally{
+                    setSubmitting(false)
+                }
+            })()
+        }
 
     function handleValidate(values){
         const errors = {}
@@ -231,7 +255,6 @@ export const CreateAccount = () => {
         }
         return errors
     }
-
     return(
         <Wrapper>
             <Art theme={theme}>
@@ -249,6 +272,9 @@ export const CreateAccount = () => {
                 </Logo>
             </Art>
             <LoginSection theme={theme}>
+                <Alert ref={alertRef} className={`alert alert-warning ${showToast}`}>
+                    <div className="message"></div>
+                </Alert>
                 <Formik initialValues={{username:"",email:"",password:"",confirmPassword:""}} onSubmit={handleFormSubmit} validate={handleValidate} >
                     {({values,isSubmitting,handleChange,handleBlur,handleSubmit,errors}) => {
                         return(
@@ -309,7 +335,7 @@ export const CreateAccount = () => {
                                     type="submit"
                                     disabled={isSubmitting||errors.password}
                                 >
-                                    Create Account
+                                    create account
                                 </Button>
                             </Form>
                         )

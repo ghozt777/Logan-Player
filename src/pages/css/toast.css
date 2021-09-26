@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Monofett&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+
+*{
+    
+    /* -------------------------color palatte ------------------------------*/
+
+    --primary: #1F2937;
+    --primary-hover: #4B5563;
+    --secondary: #5B21B6;
+    --secondary-hover: #8B5CF6;
+    
+    /* -------------------------padding styles ------------------------------*/
+
+    --padding-sm: 0.5rem;
+    --padding-md: 1rem;
+    --padding-lg: 1.5rem;
+    
+    /* -------------------------background color options --------------------*/
+
+    --background-color: #EFF6FF;
+    --bg-dark: #1F2937;
+
+    /* -------------------------text styles ---------------------------------*/
+
+    --txt-font-primary:'Open Sans', sans-serif;
+    --txt-font-secondary:'IBM Plex Mono', monospace;
+    --txt-font-tertiary: 'Work Sans', sans-serif;  
+    --txt-font-weird:'Monofett', cursive;
+    --txt-primary: #6366F1; 
+
+    /* -------------------------transition speed ----------------------------*/
+
+    --speed-md: 250ms;
+    --speed-fast: 150ms;
+
+    /* -------------------------avatar sizes --------------------------------*/
+
+    --xs: 4rem;
+    --s: 6rem;
+    --md: 8rem;
+    --l: 11rem;
+    --xl: 13rem;
+
+    /* -------------------------alert ---------------------------------------*/
+
+    --alert-border-radius: 0.8rem;
+
+    --alert-default-bg-color: #001f3f;
+    --alert-default-color: #7FDBFF;
+
+    --alert-warning-bg-color: #FF851B;
+    --alert-warning-color: #FF4136;
+
+    --alert-success-bg-color: #10B981;
+    --alert-success-color: #01FF70;
+
+    --alert-default-shadow: #0074D9;
+    --alert-warning-shadow: #EF4444;
+    --alert-success-shadow: #01FF70; 
+
+    /* -------------------buttons colors -----------------*/
+
+    
+    --button-bg-primary: #1F2937;
+    --button-primary-bg-hover: #4B5563;
+    
+    --button-bg-secondary: #5B21B6;
+    --button-secondary-bg-hover: #8B5CF6;
+
+    --button-bg-success: #10B981;
+    --button-success: #065F46;
+    --button-bg-success-hover: #34D399;
+    --button-success-hover: #065F46;
+    --button-success-shadow: #34D399;
+    --button-success-hover-shadow: #059669;
+
+    --button-bg-danger: #EF4444;
+    --button-danger: #f5c8c8;
+    --button-bg-danger-hover: #F87171;
+    --button-danger-hover: #DC2626; 
+    --button-danger-shadow: #e76a6a;
+    --button-danger-hover-shadow: #da3823;
+
+    --button-lg: 2rem;
+    --button-md: 1.4rem;
+    --button-sm: 0.8rem;      
+}
+.alert{
+    padding: var(--padding-md);
+    height:max-content;
+    width: max-content;
+    border-style: none;
+    border-radius: var(--alert-border-radius);
+    background-color: var(--alert-default-bg-color);
+    color: var(--alert-default-color);
+    box-shadow: 0px 8px 6px -1px var(--alert-default-shadow);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.alert .message{
+    font-family: var(--txt-font-secondary);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.alert img {
+    max-height: 25px;
+    padding-right: 0.4rem;
+}
+
+.alert-warning{
+    background-color: var(--alert-warning-bg-color);
+    box-shadow: 0px 8px 6px -1px var(--alert-warning-shadow);
+}
+
+.alert-warning .message{
+    color: var(--alert-warning-color);
+}
+
+.alert-success{
+    background-color: var(--alert-success-bg-color);
+    color: var(--alert-success-color);
+    box-shadow: 0px 8px 6px -1px var(--alert-success-shadow);
+}
