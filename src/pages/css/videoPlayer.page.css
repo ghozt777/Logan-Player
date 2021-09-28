@@ -23,6 +23,13 @@
     align-items:center;
 }
 
+.alert-warning.show{
+    transform: translateY(-10vh);
+}
+.alert-warning.hide{
+    transform: translateY(20vh);
+}
+
 .wrapper.light{
     background-color:white;
 }

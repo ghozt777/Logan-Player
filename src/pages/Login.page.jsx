@@ -222,7 +222,7 @@ export const LoginPage = () => {
     const {theme} = useTheme()
     const alertRef = useRef()
     const navigate = useNavigate()
-    const {user: savedUser,setUser: setUserFromServer} = useUser()
+    const {user: ufc,setUser: setUserContext} = useUser()
     const [user,setUser] = useState({})
     const [isLoading,setIsLoading] = useState(false)
     const [showToast,setShowToast] = useState("hide")
@@ -240,7 +240,7 @@ export const LoginPage = () => {
                     username:user.username,
                     password:user.password
                 })
-                setUserFromServer(data.savedUser)
+                setUserContext(data.savedUser)
                 setToken({
                     accessToken:data.accessToken,
                     refreshToken:data.refreshToken
@@ -270,11 +270,14 @@ export const LoginPage = () => {
                 console.log(response)
                 setIsLoggedIn(false)
                 setToken(null)
-                setUserFromServer(null)
+                setUserContext(null)
             }catch(e){
                 console.log(e.message)
                 alertRef.current.innerText=e.message
                 setShowToast("show")
+                setIsLoggedIn(false)
+                setToken(null)
+                setUserContext(null)
                 setTimeout(() => setShowToast("hide"),2000)
             }
         })()
@@ -355,13 +358,13 @@ export const LoginPage = () => {
                         </Alert>
                         <UserCard 
                             theme={theme} 
-                            username={savedUser.username} 
-                            email={savedUser.email}
-                            playListLength={savedUser.playlist.length}
-                            watchLaterLength={savedUser.watchLater.length}
-                            likedVideosLength={savedUser.likedVideos.length}
+                            username={ufc.username} 
+                            email={ufc.email}
+                            playListLength={ufc.playlist.length}
+                            watchLaterLength={ufc.watchLater.length}
+                            likedVideosLength={ufc.likedVideos.length}
                         />
-                        <small>currently logged in as <b>{savedUser.username}</b></small>
+                        <small>currently logged in as <b>{ufc.username}</b></small>
                         <TextFieldWrapper>
                             <Button theme={theme} onClick={handleLogout} >Log Out</Button>
                         </TextFieldWrapper>

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from "styled-components"
 import { VideoCard } from '../components/VideoCard'
 import { useTheme } from '../context/ThemeProvider'
 import { useUser } from "../context/UserInfoProvider"
 import { NavLink } from "react-router-dom"
+import history from "../images/history.svg"
 
 const Wrapper = styled.div`
     min-height: 100vh;
@@ -22,8 +23,42 @@ const Wrapper = styled.div`
 `
 
 const HeaderWrapper = styled.div`
+    background-color: ${props => props.theme==="light" ? "#DDD6FE" : "#6D28D9"};
+    box-shadow: ${props => props.theme==="light" ? "0px 10px 8px -2px #A78BFA" : "0px 10px 8px -3px black"};
     height: 5rem;
     width:80%;
+    padding: 0 5rem;
+    margin: 3rem 0;
+    border-style:none;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:flex-end;
+    position: relative;
+    border-radius: 10px;
+    @media (max-width:700px){
+        padding: 0 1rem;
+        margin: 3rem 13px 2rem 0rem;
+    }
+`
+
+const Icon = styled.img`
+    position: absolute;
+    bottom:0px;
+    left: 40px;
+    max-height: 8rem;
+    max-width: 8rem;
+    @media (max-width:700px){
+        left:10px;
+    }
+`
+
+const Header = styled.h1`
+    font-size: 1.3rem;
+    color:${props => props.theme==="light" ? "black" : "white"};
+    @media (max-width:700px){
+        font-size: 1rem;
+    }
 `
 
 const Grid = styled.div`
@@ -59,24 +94,40 @@ const Grid = styled.div`
   }
 `
 
+const CARD_STYLE = {
+    height:'max-content',
+    borderStyle:"none",
+    padding: '10px'
+}
+
 export const History = () => {
 
     const {theme} = useTheme()
-    const {user} = useUser()
+    const {user,updateUserInfo} = useUser()
+
 
     return (
         <Wrapper theme={theme}>
+            <HeaderWrapper theme={theme} >
+                <Icon src={history} alt="history-icon" />
+                <Header theme={theme} > History </Header>
+            </HeaderWrapper>
             {
                 user.history&&user.history.length>0 ? (
                     <Grid>
                         {
-                            user.history.map(({video}) => 
-                                <NavLink style={{textDecoration:"none"}} key={video._id} to={`/${video._id}`} ><VideoCard  url={video.thumbnail} title={video.title} channelName="ghozt TV" likes={"10"}/></NavLink>
+                            user.history.map((data,index) => 
+                               <div key={data.video._id} style={CARD_STYLE} >
+                                    <NavLink style={{textDecoration:"none"}} to={`/${data.video._id}`} >
+                                        <VideoCard  url={data.video.thumbnail} title={data.video.title} channelName="ghozt TV" likes={"10"}/>
+                                    </NavLink>
+                                    <small  style={{fontWeight:'bold',color:`${theme==="light" ? "black" : "white"}`}} theme={theme}><span style={{fontSize:'11px'}} >Date Watched</span>: {data.time}</small>
+                               </div>
                             )
                         }
                     </Grid>
                 ) : (
-                    <h1>No recent history...</h1>
+                    <h1 style={{color:`${theme==="light" ? "black" : "white"}`}}>No recent history...</h1>
                 )
             }
         </Wrapper>

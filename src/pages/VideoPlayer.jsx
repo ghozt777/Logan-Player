@@ -1,6 +1,6 @@
 import "./css/videoPlayer.page.css"
 import "./css/toast.css"
-import React, { useState , useRef  , useEffect} from 'react'
+import React, { useState , useRef } from 'react'
 import YouTube from "react-youtube"
 import Fade from 'react-reveal/Fade';
 import styled from "styled-components";
@@ -14,8 +14,8 @@ import { useTheme } from "../context/ThemeProvider"
 import { useVideos } from "../context/VideoProvider"
 import { useAuth } from "../context/AuthProvider";
 import { useUser } from "../context/UserInfoProvider"
-import Popup from "reactjs-popup"
 import axios from "axios"
+import { Modal } from "../components/Modal";
 
 const Input = styled.input`
 width: 90%;
@@ -61,14 +61,28 @@ const Small = styled.div`
     color: ${props => props.theme==="light" ? "black" : "white"};
     font-size: 0.8rem;
 `
-
+const Alert = styled.div`
+    position: fixed;
+    left: 20%;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index:3;
+    height: 3rem;
+    width: 70%;
+    transition: 350ms;
+    .message{
+        color: red;
+        font-weight: bold;
+    }
+`
 
 const VideoPlayer = () => {
 
     const {theme} = useTheme()
     const {videoId} = useParams()
-    const {user,setUser} = useUser()
+    const {addToHistory} = useUser()
     const [isClicked,setIsClicked] = useState(false)
+    const [showModal,setShowModal] = useState(false)
     const {videos,videoDispatch} = useVideos()
     const {token,setToken,setIsLoggedIn,isLoggedIn} = useAuth()
     const [showToast,setShowToast] = useState("hide")
@@ -82,47 +96,23 @@ const VideoPlayer = () => {
 
     function handlePlay(){
         if(isLoggedIn&&!isClicked){
-            (async() => {
-                try{
-                    setIsClicked(true)
-                    const {data} = await axios.post(`https://logan-player-backend.ghozt777.repl.co/user?type=add-to-history`,{
-                    token:token.refreshToken,
-                    videoId,
-                    userId:user._id
-                    },{
-                        headers:{
-                            authorization: `Bearer ${token.accessToken}`
-                        }
-                    })
-                    setUser(data.savedUser)
-                    if(token.accessToken!==data.tokens.accessToken) setToken(token => {
-                        return{
-                            ...token,
-                            accessToken:data.accessToken
-                        }
-                    })
-                    if(token.refreshToken!==data.tokens.refreshToken) setToken(token => {
-                        return{
-                            ...token,
-                            refreshToken:data.refreshToken
-                        }
-                    })
-                }catch(e){
-                    alertRef.current.innerText=e.message
-                    setShowToast("show")
-                    setTimeout(() => setShowToast("hide"),2000)
-                    console.error(e.message)
-                    setIsLoggedIn(false)
-                }
-            })()
+            setIsClicked(true)
+            addToHistory(videoId)
         }
     }
 
 
     function handleSubmit(){
-        if(comment==="") alert("cant post an empty comment")
+        if(comment==="") {
+            setShowToast("show")
+            alertRef.current.innerText = "can't post an empty comment :("
+            setTimeout(() => setShowToast("hide"),2000)
+            return
+        }
         if(!token){ 
-            alert("unauthorized")
+            setShowToast("show")
+            alertRef.current.innerText = "please sign in to comment on this video :("
+           setTimeout(() => setShowToast("hide"),2000)
             return
         }
         if(token.accessToken&&token.refreshToken&&comment){
@@ -136,18 +126,7 @@ const VideoPlayer = () => {
                         authorization: `Bearer ${token.accessToken}`
                      }
                 })
-                if(token.accessToken!==data.tokens.accessToken) setToken(token => {
-                    return{
-                        ...token,
-                        accessToken:data.accessToken
-                    }
-                })
-                if(token.refreshToken!==data.tokens.refreshToken) setToken(token => {
-                    return{
-                        ...token,
-                        refreshToken:data.refreshToken
-                    }
-                })
+                setToken(data.token)
                 const response = await axios.get("https://logan-player-backend.ghozt777.repl.co/videos")
                 videoDispatch({type:"GET_VIDEOS",payload:response.data.videos})
             }catch(e){
@@ -166,9 +145,14 @@ const VideoPlayer = () => {
                 foundVideo ? (
                     <div className={`wrapper ${theme}`}>
 
+                        <Alert className={`alert alert-warning ${showToast}`}>
+                            <div ref={alertRef} className="message"></div>
+                        </Alert>
+
+                        <Modal show={showModal} close={() => setShowModal(false)} />
                         <div className="player">
                             <Fade>
-                                <YouTube videoId={`${foundVideo.watchId}`} className="player" onPlay={handlePlay} />
+                                <YouTube  onPlay={handlePlay} videoId={`${foundVideo.watchId}`} className="player" />
                             </Fade>
                         </div>
 
@@ -177,14 +161,14 @@ const VideoPlayer = () => {
                                 <img src={SweetChiliSauce} className="control-icon" alt="like" />
                                 <Small theme={theme}>like 👍</Small>
                             </div>
-                            <div className={`control-wrapper ${theme}`}>
+                            <div className={`control-wrapper ${theme}`} onClick={() => setShowModal(true)} >
                                 <img src={Tomato} className="control-icon" alt="add-to-playlist" />
                                 <Small theme={theme}>add to playlist 🎧</Small>
                             </div>
                         </div>
 
                         <div className="comment-input__container">
-                            <Input theme={theme} placeholder="say something I'm givin up on you ... " onChange={e => setComment(e.target.value)} />
+                            <Input value={comment} theme={theme} placeholder="say something I'm givin up on you ... " onChange={e => setComment(e.target.value)} onFocus={() => setComment("")} />
                         </div>
 
                         <div className="btn__container">

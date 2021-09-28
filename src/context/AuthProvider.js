@@ -5,13 +5,13 @@ const AuthData = createContext();
 export const useAuth = () => useContext(AuthData);
 
 export const AuthProvider = props => {
-    const [isLoggedIn,setIsLoggedIn] = useState(JSON.parse(localStorage.getItem("token")))
-    const [token,setToken] = useState(JSON.parse(localStorage.getItem("login")))
+    const [isLoggedIn,setIsLoggedIn] = useState(localStorage.getItem("login") ? JSON.parse(localStorage.getItem("login")) : {})
+    const [token,setToken] = useState(localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : {})
 
     useEffect(() => {
         localStorage.setItem("token",JSON.stringify(token))
         localStorage.setItem("login",JSON.stringify(isLoggedIn))
     },[token,isLoggedIn])
-
+    console.log(token)
     return <AuthData.Provider value={{isLoggedIn,setIsLoggedIn,token,setToken}} >{props.children}</AuthData.Provider>
 }

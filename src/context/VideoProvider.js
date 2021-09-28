@@ -13,7 +13,6 @@ export const VideoProvider = ({children}) => {
         (async() => {
           try{
             const response  = await axios.get("https://logan-player-backend.ghozt777.repl.co/videos")
-            console.log(response.data)
             videoDispatch({type:"GET_VIDEOS",payload:response.data.videos})
           }catch(err){
             console.error(err.message)
