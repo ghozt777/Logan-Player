@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom"
 import {HashLoader} from "react-spinners"
 import {useSearch} from "../context/SearchProvider"
 
-const Grid = styled.div`
+export const Grid = styled.div`
   width: 80%;
   max-height: 50%;
   overflow-y:scroll;
@@ -15,18 +15,17 @@ const Grid = styled.div`
   align-items:center;
   justify-items:center;
   grid-template-columns: repeat(auto-fit , minmax(240px, 1fr));
-
     &::-webkit-scrollbar{
         width: 5px;
     }
     &::-webkit-scrollbar-track {
-        background: ${props => props.theme==="dark" ? "#111827" : "#D1D5DB        "};
+        background: ${props => props.theme==="dark" ? "#111827" : "#D1D5DB"};
     }
     &::-webkit-scrollbar-thumb {
-        background: ${props => props.theme==="dark" ? "#7C3AED" : "#1F2937        "};
+        background: ${props => props.theme==="dark" ? "#7C3AED" : "#1F2937"};
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: ${props => props.theme==="dark" ? "#A78BFA" : "#4B5563        "};
+        background: ${props => props.theme==="dark" ? "#A78BFA" : "#4B5563"};
     }
 
   @media (max-width:700px){

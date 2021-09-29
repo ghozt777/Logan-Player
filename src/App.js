@@ -7,6 +7,7 @@ import {CreateAccount} from './pages/CreateAccount.page'
 import {Message} from "./pages/Message.page"
 import { History } from "./pages/History.page"
 import VideoPlayer from "./pages/VideoPlayer"
+import { Playlist } from "./pages/Playlists.page"
 
 const Wrapper = styled.div`
   position:relative;
@@ -24,6 +25,7 @@ function App() {
             <Route path="/message" element={<Message />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/history" element={<History />} />
+            <Route path="/playlist" element={<Playlist />} />
             <Route path="/:videoId" element={<VideoPlayer />} />
             <Route path="/create-account" element={<CreateAccount />} />
         </Routes>
