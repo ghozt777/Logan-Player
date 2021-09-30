@@ -10,7 +10,7 @@ import {useState,useRef} from "react"
 import { useAuth } from "../context/AuthProvider"
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../context/UserInfoProvider"
-import "./css/toast.css"
+import { Alert } from "../components/Toast/Toast"
 
 
 const Wrapper = styled.div`
@@ -22,12 +22,7 @@ const Wrapper = styled.div`
     padding:0;
     margin:0;
     display:flex;
-    .alert-warning.show{
-        transform: translateY(-10vh);
-    }
-    .alert-warning.hide{
-        transform: translateY(20vh);
-    }
+
     flex-direction:row;
     @media (max-width: 700px){
         flex-direction:column;
@@ -195,20 +190,7 @@ const Form = styled.form`
 
 `
 
-const Alert = styled.div`
-    position: absolute;
-    left: 20%;
-    bottom: 0;
-    transform: translateX(-50%);
-    z-index:3;
-    height: 3rem;
-    width: 70%;
-    transition: 350ms;
-    .message{
-        color: red;
-        font-weight: bold;
-    }
-`
+
 
 export const CreateAccount = () => {
     const {theme} = useTheme()

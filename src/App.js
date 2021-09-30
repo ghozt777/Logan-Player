@@ -6,8 +6,10 @@ import {MainPage} from "./pages/Main.page"
 import {CreateAccount} from './pages/CreateAccount.page'
 import {Message} from "./pages/Message.page"
 import { History } from "./pages/History.page"
-import VideoPlayer from "./pages/VideoPlayer"
-import { Playlist } from "./pages/Playlists.page"
+import VideoPlayer from "./pages/VideoPlayer/VideoPlayer"
+import { Playlist } from "./pages/PlayList/Test"
+import { LikedVids } from "./pages/LikedVideos.page"
+import { WatchLater } from "./pages/WatchLater.page"
 
 const Wrapper = styled.div`
   position:relative;
@@ -26,6 +28,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/history" element={<History />} />
             <Route path="/playlist" element={<Playlist />} />
+            <Route path="/liked-videos" element={<LikedVids />} />
+            <Route path="/watch-later" element={<WatchLater />} />
             <Route path="/:videoId" element={<VideoPlayer />} />
             <Route path="/create-account" element={<CreateAccount />} />
         </Routes>

@@ -11,6 +11,8 @@ export const AuthProvider = props => {
     useEffect(() => {
         if(token){
             localStorage.setItem("token",JSON.stringify(token))
+        }else{
+            localStorage.setItem("token" , JSON.stringify(null))
         }
         localStorage.setItem("login",JSON.stringify(isLoggedIn))
     },[token,isLoggedIn])

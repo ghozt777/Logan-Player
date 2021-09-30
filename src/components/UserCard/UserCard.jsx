@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from "styled-components"
-import Doggo from "../images/cat.jpeg"
+import Cat from "../../images/cat.jpeg"
 import "./card.css"
 
 const CardWrapper = styled.div`
@@ -53,7 +53,7 @@ export const UserCard = (props) => {
     return (
         <CardWrapper theme={props.theme} >
             <AvatarWrapper>
-                <Avatar src={Doggo} alt="doggo"/>
+                <Avatar src={Cat} alt="cat"/>
                 <h1 className={`user ${props.theme}`}>{props.username}</h1>
             </AvatarWrapper>
             <Divider theme={props.theme}></Divider>

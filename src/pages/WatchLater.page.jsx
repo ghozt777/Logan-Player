@@ -4,7 +4,7 @@ import { VideoCard } from '../components/VideoCard'
 import { useTheme } from '../context/ThemeProvider'
 import { useUser } from "../context/UserInfoProvider"
 import { NavLink } from "react-router-dom"
-import history from "../images/history.svg"
+import watchLater from "../images/watchLater.svg"
 
 const Wrapper = styled.div`
     min-height: 100vh;
@@ -28,7 +28,7 @@ const HeaderWrapper = styled.div`
     height: 5rem;
     width:80%;
     padding: 0 5rem;
-    margin: 3rem 0;
+    margin: 4rem 0;
     border-style:none;
     display:flex;
     flex-direction:row;
@@ -38,7 +38,7 @@ const HeaderWrapper = styled.div`
     border-radius: 10px;
     @media (max-width:700px){
         padding: 0 1rem;
-        margin: 3rem 13px 2rem 0rem;
+        margin: 4rem 13px 2rem 0rem;
     }
 `
 
@@ -102,56 +102,28 @@ const CARD_STYLE = {
     padding: '10px'
 }
 
-const Button = styled.button`
-    position: absolute;
-    top:6rem;
-    left: 0rem;
-    padding: 10px;
-    right: 10%;
-    border-style: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 350ms;
-    font-weight: bold;
-    background-color: ${props => props.theme==="light" ? "#111827" : "#8B5CF6"};
-    color: ${props => props.theme==="light" ? "white" : "black"};
-    &:hover{
-        background-color: ${props => props.theme==="light" ? "#374151" : "#C4B5FD"};
-    }
-    &:disabled{
-        filter: brightness(50%);
-    }
-`
 
-export const History = () => {
+export const WatchLater = () => {
 
     const {theme} = useTheme()
-    const {user,clearHistory} = useUser()
+    const {user} = useUser()
 
 
     return (
         <Wrapper theme={theme}>
             <HeaderWrapper theme={theme} >
-                <Icon src={history} alt="history-icon" />
-                <Header theme={theme} > History </Header>
-            <Button 
-                theme={theme} 
-                disabled={(user&&user.history&&user.history.length===0) || !user}
-                onClick={() => clearHistory()}
-                >
-                clear history
-            </Button>
+                <Icon src={watchLater} alt="history-icon" />
+                <Header theme={theme} > Watch Later </Header>
             </HeaderWrapper>
             {
-                user&&user.history&&user.history.length>0 ? (
+                user&&user.watchLater&&user.watchLater.length>0 ? (
                     <Grid>
                         {
-                            user.history.map((data,index) => 
-                               <div key={data.video._id} style={CARD_STYLE} >
-                                    <NavLink style={{textDecoration:"none"}} to={`/${data.video._id}`} >
-                                        <VideoCard  url={data.video.thumbnail} title={data.video.title} channelName="ghozt TV" likes={"10"}/>
+                            user.watchLater.map((data,index) => 
+                               <div key={data._id} style={CARD_STYLE} >
+                                    <NavLink style={{textDecoration:"none"}} to={`/${data._id}`} >
+                                        <VideoCard  url={data.thumbnail} title={data.title} channelName="ghozt TV" likes={"10"}/>
                                     </NavLink>
-                                    <small  style={{fontWeight:'bold',color:`${theme==="light" ? "black" : "white"}`}} theme={theme}><span style={{fontSize:'11px'}} >Date Watched</span>: {data.time}</small>
                                </div>
                             )
                         }

@@ -15,11 +15,11 @@ ReactDOM.render(
       <AuthProvider>
         <VideoProvider>
           <SearchProvider>
-            <UserProvider>
-              <ThemeProvider>
-                <App />
-              </ThemeProvider>
-            </UserProvider>
+              <UserProvider>
+                <ThemeProvider>
+                  <App />
+                </ThemeProvider>
+              </UserProvider>
           </SearchProvider>
         </VideoProvider>
       </AuthProvider>

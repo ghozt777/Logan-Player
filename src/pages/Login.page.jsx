@@ -9,9 +9,10 @@ import { Fade } from "react-reveal"
 import { useAuth } from "../context/AuthProvider"
 import { ClockLoader} from "react-spinners"
 import { useUser } from "../context/UserInfoProvider"
-import { UserCard } from "../components/UserCard"
+import { UserCard } from "../components/UserCard/UserCard"
+import { Alert } from "../components/Toast/Toast"
 import axios from "axios"
-import "./css/toast.css"
+
 
 const Wrapper = styled.div`
     overflow-x:hidden;
@@ -23,12 +24,6 @@ const Wrapper = styled.div`
     margin:0;
     display:flex;
     flex-direction:row;
-    .alert-warning.show{
-        transform: translateY(-10vh);
-    }
-    .alert-warning.hide{
-        transform: translateY(20vh);
-    }
     @media (max-width: 700px){
         flex-direction:column;
     }
@@ -180,20 +175,7 @@ const Extras = styled.div`
     }
 `
 
-const Alert = styled.div`
-    position: absolute;
-    left: 20%;
-    bottom: 0;
-    transform: translateX(-50%);
-    z-index:3;
-    height: 3rem;
-    width: 70%;
-    transition: 350ms;
-    .message{
-        color: red;
-        font-weight: bold;
-    }
-`
+
 
 const Button = styled.button`
     @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');

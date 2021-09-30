@@ -125,8 +125,24 @@
     color: var(--alert-warning-color);
 }
 
+.success-message{
+    color: var(--alert-success-color);
+}
+
 .alert-success{
     background-color: var(--alert-success-bg-color);
     color: var(--alert-success-color);
     box-shadow: 0px 8px 6px -1px var(--alert-success-shadow);
+}
+.alert-warning.show{
+    transform: translateY(-10vh);
+}
+.alert-warning.hide{
+    transform: translateY(20vh);
+}
+.alert-success.show{
+    transform: translateY(-10vh);
+}
+.alert-success.hide{
+    transform: translateY(20vh);
 }

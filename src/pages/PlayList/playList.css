@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Pangolin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+
+.card__container{
+    margin: 2rem 0rem;
+    height: 90%;
+    width: 92%;
+    height: max-content;
+    display: grid;
+    grid-auto-columns: 1fr;
+    row-gap: 2rem;
+}
+
+.card{
+    display:flex;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 10rem;
+    width: 95%;
+    border-style: none;
+    border-radius: 10px;
+}
+
+.card.dark{
+    background-color: #282828;
+}
+
+.card.light{
+    background-color: #E5E7EB;
+}
+
+.card-hero{
+    max-width: 300px;
+    max-height: 90%;
+    width: 40%;
+    border-style: none;
+    border-radius: 10px;
+}
+
+.card-hero.light{
+    box-shadow: 0px 10px 8px -2px #6B7280;
+}
+
+.card-hero.dark{
+    box-shadow: 0px 10px 8px -2px #020302;
+}
+
+.card-details{
+    height: 100%;
+    width:35%;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.card-details-wrapper{
+    height: 20px;
+    width:100%;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.card-text{
+    /* font-family: 'Pangolin', cursive; */
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1rem;
+    margin: 0rem 10px;
+}
+
+.card-icon{
+    height: 40px;
+}
+.card-text.dark{
+    color:white;
+}
+
+.card-text.light{
+    color:black;
+}
+
+@media (max-width:700px){
+    .card__container{
+        width:100%;
+    }
+}

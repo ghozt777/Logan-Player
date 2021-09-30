@@ -1,21 +1,20 @@
-import "./css/videoPlayer.page.css"
-import "./css/toast.css"
+import axios from "axios"
 import React, { useState , useRef } from 'react'
 import YouTube from "react-youtube"
 import Fade from 'react-reveal/Fade';
 import styled from "styled-components";
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import Tomato from "../images/pizza-icons-01/svg/Tomato.svg"
-import SweetChiliSauce from "../images/pizza-icons-01/svg/SweetChiliSauce.svg"
+import Tomato from "../../images/pizza-icons-01/svg/Tomato.svg"
 import { useParams } from "react-router-dom"
-import { Comments } from '../components/Comments'
+import { Comments } from '../../components/Comments'
 import { ClimbingBoxLoader } from "react-spinners"
-import { useTheme } from "../context/ThemeProvider"
-import { useVideos } from "../context/VideoProvider"
-import { useAuth } from "../context/AuthProvider";
-import { useUser } from "../context/UserInfoProvider"
-import axios from "axios"
-import { Modal } from "../components/Modal";
+import { useTheme } from "../../context/ThemeProvider"
+import { useVideos } from "../../context/VideoProvider"
+import { useAuth } from "../../context/AuthProvider";
+import { useUser } from "../../context/UserInfoProvider"
+import { Modal } from "../../components/Modal";
+import SweetChiliSauce from "../../images/pizza-icons-01/svg/SweetChiliSauce.svg"
+import "./videoPlayer.page.css"
 
 const Input = styled.input`
 width: 90%;
@@ -61,31 +60,16 @@ const Small = styled.div`
     color: ${props => props.theme==="light" ? "black" : "white"};
     font-size: 0.8rem;
 `
-const Alert = styled.div`
-    position: fixed;
-    left: 20%;
-    bottom: 0;
-    transform: translateX(-50%);
-    z-index:3;
-    height: 3rem;
-    width: 70%;
-    transition: 350ms;
-    .message{
-        color: red;
-        font-weight: bold;
-    }
-`
 
 const VideoPlayer = () => {
 
     const {theme} = useTheme()
     const {videoId} = useParams()
-    const {addToHistory} = useUser()
+    const {addToHistory,addToLikedVideos} = useUser()
     const [isClicked,setIsClicked] = useState(false)
     const [showModal,setShowModal] = useState(false)
     const {videos,videoDispatch} = useVideos()
-    const {token,setToken,setIsLoggedIn,isLoggedIn} = useAuth()
-    const [showToast,setShowToast] = useState("hide")
+    const {token,setToken,isLoggedIn} = useAuth()
     const [comment,setComment] = useState()
     const alertRef = useRef()
     const groupProps = {
@@ -101,18 +85,20 @@ const VideoPlayer = () => {
         }
     }
 
+    function handleAddToLikedVideos(videoId){
+        if(token&&token.accessToken&&token.refreshToken){
+            addToLikedVideos(videoId)
+        }
+    }
+
 
     function handleSubmit(){
         if(comment==="") {
-            setShowToast("show")
             alertRef.current.innerText = "can't post an empty comment :("
-            setTimeout(() => setShowToast("hide"),2000)
             return
         }
         if(!token){ 
-            setShowToast("show")
             alertRef.current.innerText = "please sign in to comment on this video :("
-           setTimeout(() => setShowToast("hide"),2000)
             return
         }
         if(token.accessToken&&token.refreshToken&&comment){
@@ -130,9 +116,7 @@ const VideoPlayer = () => {
                 const response = await axios.get("https://logan-player-backend.ghozt777.repl.co/videos")
                 videoDispatch({type:"GET_VIDEOS",payload:response.data.videos})
             }catch(e){
-                alert('u have been logged out ')
                 console.error(e.message)
-                setIsLoggedIn(false)
             }
             })()
         }
@@ -145,11 +129,7 @@ const VideoPlayer = () => {
                 foundVideo ? (
                     <div className={`wrapper ${theme}`}>
 
-                        <Alert className={`alert alert-warning ${showToast}`}>
-                            <div ref={alertRef} className="message"></div>
-                        </Alert>
-
-                        <Modal show={showModal} close={() => setShowModal(false)} />
+                        <Modal show={showModal} close={() => setShowModal(false)} videoId={videoId} />
                         <div className="player">
                             <Fade>
                                 <YouTube  onPlay={handlePlay} videoId={`${foundVideo.watchId}`} className="player" />
@@ -157,7 +137,7 @@ const VideoPlayer = () => {
                         </div>
 
                         <div className="controls">
-                            <div className={`control-wrapper ${theme}`}>
+                            <div className={`control-wrapper ${theme}`} onClick={() => handleAddToLikedVideos(videoId)} >
                                 <img src={SweetChiliSauce} className="control-icon" alt="like" />
                                 <Small theme={theme}>like 👍</Small>
                             </div>
