@@ -132,7 +132,7 @@ const VideoPlayer = () => {
                         <Modal show={showModal} close={() => setShowModal(false)} videoId={videoId} />
                         <div className="player">
                             <Fade>
-                                <YouTube  onPlay={handlePlay} videoId={`${foundVideo.watchId}`} className="player" />
+                                <YouTube  onPlay={() => handlePlay()} videoId={`${foundVideo.watchId}`} className="player" />
                             </Fade>
                         </div>
 

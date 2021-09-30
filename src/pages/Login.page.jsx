@@ -267,6 +267,9 @@ export const LoginPage = () => {
 
     return(
         <Wrapper>
+            <Alert className={`alert alert-warning ${showToast}`}>
+                <div ref={alertRef} className="message"></div>
+            </Alert>
             <Art theme={theme}>
                 <QuoteWrapper>
                     <Quote theme={theme}>
@@ -285,9 +288,6 @@ export const LoginPage = () => {
                 !isLoggedIn ? (
 
                     <LoginSection theme={theme}>
-                        <Alert className={`alert alert-warning ${showToast}`}>
-                            <div ref={alertRef} className="message"></div>
-                        </Alert>
                         <TextFieldWrapper>
                             <HiOutlineEmojiHappy size="25" />
                             <TextField  
