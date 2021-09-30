@@ -157,7 +157,7 @@ export const History = () => {
                         }
                     </Grid>
                 ) : (
-                    <h1 style={{color:`${theme==="light" ? "black" : "white"}`,marginTop:"50%"}}>No recent history...</h1>
+                    <h1 style={{color:`${theme==="light" ? "black" : "white"}`,marginTop:"10rem"}}>No recent history...</h1>
                 )
             }
         </Wrapper>

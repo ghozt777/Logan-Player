@@ -10,6 +10,7 @@ import VideoPlayer from "./pages/VideoPlayer/VideoPlayer"
 import { Playlist } from "./pages/PlayList/Test"
 import { LikedVids } from "./pages/LikedVideos.page"
 import { WatchLater } from "./pages/WatchLater.page"
+import { NotFound } from "./pages/NotFound.page"
 
 const Wrapper = styled.div`
   position:relative;
@@ -32,6 +33,7 @@ function App() {
             <Route path="/watch-later" element={<WatchLater />} />
             <Route path="/:videoId" element={<VideoPlayer />} />
             <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
       </Wrapper>
   );
