@@ -157,7 +157,7 @@ export const UserProvider = props => {
                 }
             })()
         }
-    },[])
+    })
 
 
 
