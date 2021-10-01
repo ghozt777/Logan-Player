@@ -109,6 +109,11 @@ const Loader = styled.div`
     transform:translate(-50% -50%);
 `
 
+const Message = styled.div`
+    position:fixed;
+    top: 12rem;
+`
+
 export const Dash = () => {
 
     const { playlistId } = useParams()
@@ -138,7 +143,9 @@ export const Dash = () => {
                             }
                         </Grid>
                     ) : (
-                        <h1 style={{color:`${theme==="light" ? "black" : "white"}`,marginTop:"50%"}}>No videos in Playlist...</h1>
+                        <Message>
+                            <h1 style={{color:`${theme==="light" ? "black" : "white"}`,marginTop:"50%"}}>No videos in Playlist...</h1>
+                        </Message>
                     )
                 }
             </Wrapper>
