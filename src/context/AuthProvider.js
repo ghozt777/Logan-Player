@@ -16,6 +16,5 @@ export const AuthProvider = props => {
         }
         localStorage.setItem("login",JSON.stringify(isLoggedIn))
     },[token,isLoggedIn])
-    console.log(token)
     return <AuthData.Provider value={{isLoggedIn,setIsLoggedIn,token,setToken}} >{props.children}</AuthData.Provider>
 }
