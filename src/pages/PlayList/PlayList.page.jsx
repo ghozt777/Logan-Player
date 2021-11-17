@@ -137,8 +137,8 @@ export const Playlist = () => {
                                                     user.playlist.map((pl,index) => {
                                                         return(
                                                             <Fade key={pl._id}>
-                                                                <div className={`card ${theme}`} onClick={() => navigate(`/playlist/${pl._id}`)} >
-                                                                    <img className={`card-hero ${theme}`} src={images[index%images.length].url} alt={images[index%images.length].alt}/>
+                                                                <div className={`card ${theme}`} >
+                                                                    <img  onClick={() => navigate(`/playlist/${pl._id}`)} className={`card-hero ${theme}`} src={images[index%images.length].url} alt={images[index%images.length].alt}/>
                                                                     <div className="card-details">
                                                                         <div className="card-details-wrapper">
                                                                             <img className="card-icon" src={Minion} alt="minion" />

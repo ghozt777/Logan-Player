@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useTheme } from "../context/ThemeProvider"
 import { TextField } from "@material-ui/core"
 import { FaKey ,FaUserAstronaut} from "react-icons/fa"
-import { SiMailDotRu } from "react-icons/si"
+import { HiOutlineMail } from 'react-icons/hi' 
 import { Fade } from "react-reveal"
 import axios from "axios"
 import { Formik } from "formik"
@@ -275,7 +275,7 @@ export const CreateAccount = () => {
                                     />
                                 </TextFieldWrapper>
                                 <TextFieldWrapper>
-                                    <SiMailDotRu />
+                                    <HiOutlineMail/>
                                     <TextField 
                                         className="text-field" 
                                         name="email" 
